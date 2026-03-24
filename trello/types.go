@@ -16,11 +16,11 @@ type Board struct {
 
 // List represents a Trello list.
 type List struct {
-	ID      string `json:"id"`
-	Name    string `json:"name"`
-	Closed  bool   `json:"closed,omitempty"`
-	Pos     string `json:"pos,omitempty"`
-	IDBoard string `json:"idBoard,omitempty"`
+	ID      string  `json:"id"`
+	Name    string  `json:"name"`
+	Closed  bool    `json:"closed,omitempty"`
+	Pos     float64 `json:"pos,omitempty"`
+	IDBoard string  `json:"idBoard,omitempty"`
 }
 
 // Card represents a Trello card.
