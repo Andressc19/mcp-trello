@@ -11,11 +11,19 @@ import (
 )
 
 func main() {
+	// Check for setup command
+	if len(os.Args) > 1 && os.Args[1] == "setup" {
+		if err := RunSetup(); err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
+
 	log.SetOutput(os.Stderr)
 
 	creds, err := LoadCredentials()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err, "\n\nRun 'mcp-trello setup' to configure credentials")
 	}
 
 	client := trello.NewTrelloClient(creds.APIKey, creds.Token)
