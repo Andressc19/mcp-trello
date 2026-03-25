@@ -1,0 +1,56 @@
+# .goreleaser.yaml for mcp-trello
+# Build configuration for GoReleaser
+
+project_name: mcp-trello
+
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - binary: mcp-trello
+    main: .
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - "-s -w"
+      - "-X main.version={{.Version}}"
+      - "-X main.commit={{.Commit}}"
+      - "-X main.date={{.Date}}"
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    formats:
+      - tar.gz
+      - zip
+
+archives:
+  - format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+
+release:
+  github:
+    owner: Andressc19
+    name: mcp-trello-go
+  draft: false
+  prerelease: auto
