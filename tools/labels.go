@@ -6,7 +6,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"github.com/Andressc19/mcp-trello-go/trello"
+	"github.com/Andressc19/mcp-trello/trello"
 )
 
 type CreateLabelInput struct {

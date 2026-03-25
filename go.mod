@@ -1,4 +1,4 @@
-module github.com/Andressc19/mcp-trello-go
+module github.com/Andressc19/mcp-trello
 
 go 1.25.0
 

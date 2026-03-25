@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/Andressc19/mcp-trello-go/tools"
-	"github.com/Andressc19/mcp-trello-go/trello"
+	"github.com/Andressc19/mcp-trello/tools"
+	"github.com/Andressc19/mcp-trello/trello"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

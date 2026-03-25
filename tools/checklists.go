@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/Andressc19/mcp-trello-go/trello"
+	"github.com/Andressc19/mcp-trello/trello"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
