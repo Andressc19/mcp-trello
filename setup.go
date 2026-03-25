@@ -13,6 +13,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+var execCommand = exec.Command
+
 // Styles
 var (
 	trelloBlue  = lipgloss.Color("25")
@@ -335,7 +337,7 @@ func saveConfigView(m model) string {
 	s += "  " + inputLabel.Render("API Key: ") + maskString(m.apiKey) + "\n"
 	s += "  " + inputLabel.Render("Token: ") + maskString(m.token) + "\n\n"
 
-	home, _ := os.UserHomeDir()
+	home, _ := userHomeDir()
 	configPath := filepath.Join(home, ".config", "opencode", "mcp-trello.json")
 	s += dimText.Render("Save to: ") + configPath + "\n\n"
 
@@ -346,7 +348,7 @@ func saveConfigView(m model) string {
 func addToOpenCodeView(m model) string {
 	s := titleStyle.Render(" Step 4: Add to OpenCode ") + "\n\n"
 
-	home, _ := os.UserHomeDir()
+	home, _ := userHomeDir()
 	opencodePath := filepath.Join(home, ".config", "opencode", "opencode.json")
 
 	s += normalText.Render("Add mcp-trello server to OpenCode config?") + "\n\n"
@@ -370,7 +372,7 @@ func verifyConfigView(m model) string {
 	s += "  TRELLO_API_KEY: " + getEnvStatus(apiKey) + "\n"
 	s += "  TRELLO_TOKEN: " + getEnvStatus(token) + "\n\n"
 
-	home, _ := os.UserHomeDir()
+	home, _ := userHomeDir()
 	configPath := filepath.Join(home, ".config", "opencode", "mcp-trello.json")
 	if data, err := os.ReadFile(configPath); err == nil {
 		var creds Credentials
@@ -437,7 +439,7 @@ func uninstallDoneView(m model) string {
 }
 
 func uninstall() error {
-	home, err := os.UserHomeDir()
+	home, err := userHomeDir()
 	if err != nil {
 		return fmt.Errorf("could not find home directory: %w", err)
 	}
@@ -470,7 +472,7 @@ func uninstall() error {
 
 // Helper functions for file operations
 func saveCredentials(apiKey, token string) error {
-	home, err := os.UserHomeDir()
+	home, err := userHomeDir()
 	if err != nil {
 		return fmt.Errorf("could not find home directory: %w", err)
 	}
@@ -499,12 +501,18 @@ func saveCredentials(apiKey, token string) error {
 }
 
 func addToOpenCodeConfig() error {
-	home, err := os.UserHomeDir()
+	home, err := userHomeDir()
 	if err != nil {
 		return fmt.Errorf("could not find home directory: %w", err)
 	}
 
 	configPath := filepath.Join(home, ".config", "opencode", "opencode.json")
+
+	// Ensure directory exists
+	dir := filepath.Dir(configPath)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return fmt.Errorf("could not create config directory: %w", err)
+	}
 
 	var config map[string]interface{}
 	if data, err := os.ReadFile(configPath); err == nil {
@@ -541,11 +549,11 @@ func openBrowser(url string) error {
 	var cmd *exec.Cmd
 	switch os := runtime.GOOS; os {
 	case "darwin":
-		cmd = exec.Command("open", url)
+		cmd = execCommand("open", url)
 	case "windows":
-		cmd = exec.Command("cmd", "/c", "start", url)
+		cmd = execCommand("cmd", "/c", "start", url)
 	default:
-		cmd = exec.Command("xdg-open", url)
+		cmd = execCommand("xdg-open", url)
 	}
 	return cmd.Start()
 }

@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 )
 
+var userHomeDir = os.UserHomeDir
+
 type Credentials struct {
 	APIKey string `json:"apiKey"`
 	Token  string `json:"token"`
@@ -22,7 +24,7 @@ func LoadCredentials() (*Credentials, error) {
 	}
 
 	// Priority 2: Config file
-	home, err := os.UserHomeDir()
+	home, err := userHomeDir()
 	if err == nil {
 		configPath := filepath.Join(home, ".config", "opencode", "mcp-trello.json")
 		data, err := os.ReadFile(configPath)
