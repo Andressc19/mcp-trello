@@ -26,12 +26,10 @@ builds:
     goarch:
       - amd64
       - arm64
-    formats:
-      - tar.gz
-      - zip
 
 archives:
-  - format_overrides:
+  - format: tar.gz
+    format_overrides:
       - goos: windows
         format: zip
 
