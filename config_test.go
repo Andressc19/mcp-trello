@@ -6,14 +6,17 @@ import (
 	"testing"
 )
 
-func setupConfigTest(t *testing.T) {
+func setupConfigTest(t *testing.T) string {
 	t.Helper()
 	// Isolate from real home dir
 	tmpDir := t.TempDir()
+	mockUserHomeDir(t, tmpDir)
+	// Also set HOME env var for compatibility with other code that may read it
 	t.Setenv("HOME", tmpDir)
 	// Clear env vars
 	t.Setenv("TRELLO_API_KEY", "")
 	t.Setenv("TRELLO_TOKEN", "")
+	return tmpDir
 }
 
 func writeConfigFile(t *testing.T, content string) {
@@ -30,7 +33,7 @@ func writeConfigFile(t *testing.T, content string) {
 }
 
 func TestLoadCredentials_EnvVars(t *testing.T) {
-	setupConfigTest(t)
+	_ = setupConfigTest(t)
 	t.Setenv("TRELLO_API_KEY", "env-key")
 	t.Setenv("TRELLO_TOKEN", "env-token")
 
@@ -47,7 +50,7 @@ func TestLoadCredentials_EnvVars(t *testing.T) {
 }
 
 func TestLoadCredentials_ConfigFile(t *testing.T) {
-	setupConfigTest(t)
+	_ = setupConfigTest(t)
 	writeConfigFile(t, `{"apiKey":"file-key","token":"file-token"}`)
 
 	creds, err := LoadCredentials()
@@ -63,7 +66,7 @@ func TestLoadCredentials_ConfigFile(t *testing.T) {
 }
 
 func TestLoadCredentials_EnvVarsPriority(t *testing.T) {
-	setupConfigTest(t)
+	_ = setupConfigTest(t)
 	t.Setenv("TRELLO_API_KEY", "env-key")
 	t.Setenv("TRELLO_TOKEN", "env-token")
 	writeConfigFile(t, `{"apiKey":"file-key","token":"file-token"}`)
@@ -81,7 +84,7 @@ func TestLoadCredentials_EnvVarsPriority(t *testing.T) {
 }
 
 func TestLoadCredentials_PartialEnvVars(t *testing.T) {
-	setupConfigTest(t)
+	_ = setupConfigTest(t)
 	t.Setenv("TRELLO_API_KEY", "env-key")
 	// TRELLO_TOKEN not set
 	writeConfigFile(t, `{"apiKey":"file-key","token":"file-token"}`)
@@ -99,7 +102,7 @@ func TestLoadCredentials_PartialEnvVars(t *testing.T) {
 }
 
 func TestLoadCredentials_MissingCredentials(t *testing.T) {
-	setupConfigTest(t)
+	_ = setupConfigTest(t)
 	// No env vars, no config file
 
 	_, err := LoadCredentials()
@@ -109,7 +112,7 @@ func TestLoadCredentials_MissingCredentials(t *testing.T) {
 }
 
 func TestLoadCredentials_InvalidJSON(t *testing.T) {
-	setupConfigTest(t)
+	_ = setupConfigTest(t)
 	writeConfigFile(t, `not valid json {{{`)
 
 	_, err := LoadCredentials()
