@@ -1,4 +1,4 @@
-# mcp-trello-go
+# mcp-trello
 
 MCP server for Trello written in Go. Provides 21 tools for interacting with Trello boards, lists, cards, labels, and checklists via the Model Context Protocol.
 
@@ -10,7 +10,7 @@ MCP server for Trello written in Go. Provides 21 tools for interacting with Trel
 ## Installation
 
 ```bash
-go install github.com/Andressc19/mcp-trello-go@latest
+go install github.com/Andressc19/mcp-trello@latest
 ```
 
 The binary will be installed to `$GOPATH/bin/mcp-trello`. Make sure `$GOPATH/bin` is in your `PATH`.
