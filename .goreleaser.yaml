@@ -1,6 +1,8 @@
 # .goreleaser.yaml for mcp-trello
 # Build configuration for GoReleaser
 
+version: 2
+
 project_name: mcp-trello
 
 before:
@@ -51,6 +53,6 @@ changelog:
 release:
   github:
     owner: Andressc19
-    name: mcp-trello-go
+    name: mcp-trello
   draft: false
   prerelease: auto
