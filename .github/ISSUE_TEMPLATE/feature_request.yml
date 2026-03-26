@@ -5,8 +5,6 @@ body:
   - type: markdown
     attributes:
       value: |
-        # ✨ Feature Request
-
         Thanks for suggesting an improvement! Help us understand the problem you're solving.
 
         > **How this works:**
